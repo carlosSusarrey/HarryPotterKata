@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -16,11 +17,10 @@ namespace HarryPotterKata
 
         public double Price()
         {
-            var remainingBooks = _books;
-            var numberOfRemainingBooks = GetNumberOfBooks(remainingBooks);
             var total = 0.0;
-
-            while (numberOfRemainingBooks > 0)
+            var remainingBooks = _books;
+            
+            while (GetNumberOfBooks(remainingBooks) > 0)
             {
                 var numberOfDistinctBooks = GetNumberOfDistinctBooks(remainingBooks);
                 if (numberOfDistinctBooks == 2)
@@ -28,21 +28,26 @@ namespace HarryPotterKata
                 else
                     total +=  BookPrice;
 
-                var distinctBooks = new Dictionary<Book,int>(remainingBooks);
-                foreach (var book in distinctBooks.Keys)
-                {
-                    if (remainingBooks[book] == 1)
-                    {
-                        remainingBooks.Remove(book);
-                    }
-                    else
-                    {
-                        remainingBooks[book] -= 1;
-                    }
-                }
-                numberOfRemainingBooks = GetNumberOfBooks(remainingBooks);
+                RemoveOneOfEachBook(remainingBooks);
             }
             return total;
+        }
+
+        private static void RemoveOneOfEachBook(Dictionary<Book, int> remainingBooks)
+        {
+            if (remainingBooks == null) throw new ArgumentNullException(nameof(remainingBooks));
+            var distinctBooks = new Dictionary<Book, int>(remainingBooks);
+            foreach (var book in distinctBooks.Keys)
+            {
+                if (remainingBooks[book] == 1)
+                {
+                    remainingBooks.Remove(book);
+                }
+                else
+                {
+                    remainingBooks[book] -= 1;
+                }
+            }
         }
 
         private static int GetNumberOfBooks(Dictionary<Book, int> books)
