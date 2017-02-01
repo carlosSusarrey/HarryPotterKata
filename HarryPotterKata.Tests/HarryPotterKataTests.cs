@@ -56,6 +56,21 @@ namespace HarryPotterKata.Tests
             CartPriceShouldBe(16);
         }
 
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        public void Three_of_the_same_book_Price_is_24(int bookNumber)
+        {
+            SetUpEmptyCart();
+            _myCart.AddBook(new Book(bookNumber));
+            _myCart.AddBook(new Book(bookNumber));
+            _myCart.AddBook(new Book(bookNumber));
+            CartPriceShouldBe(24);
+        }
+
         [Fact]
         public void Two_different_books_receive_5_percent_discount()
         {
@@ -85,5 +100,7 @@ namespace HarryPotterKata.Tests
             _myCart.AddBook(new Book(2));
             CartPriceShouldBe((8*2*.95)+8);
         }
+
+
     }
 }
