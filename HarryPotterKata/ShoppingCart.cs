@@ -4,11 +4,12 @@ namespace HarryPotterKata
 {
     public class ShoppingCart
     {
-        private List<Book> _books;
+        private readonly List<Book> _books = new List<Book>();
+        private const int BookPrice = 8;
 
         public ShoppingCart(Book book)
         {
-            _books = new List<Book> {book};
+            _books.Add(book);
         }
 
         public ShoppingCart(List<Book> bookList)
@@ -23,11 +24,7 @@ namespace HarryPotterKata
 
         public int Price()
         {
-            if (_books.Count == 0)
-            {
-                return 0;
-            }
-            return _books.Count * 8;
+            return _books.Count * BookPrice;
         }
     }
 }
