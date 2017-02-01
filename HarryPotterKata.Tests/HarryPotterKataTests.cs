@@ -18,7 +18,7 @@ namespace HarryPotterKata.Tests
 
         private void CartPriceShouldBe(double expected)
         {
-            _myCart.Price().Should().Be(expected);
+            _myCart.PriceInCents().Should().Be(expected);
         }
 
         private ShoppingCart _myCart;
@@ -39,7 +39,7 @@ namespace HarryPotterKata.Tests
         {
             SetUpEmptyCart();
             _myCart.AddBook(new Book(bookNumber));
-            CartPriceShouldBe(8);
+            CartPriceShouldBe(800);
         }
 
         [Theory]
@@ -53,7 +53,7 @@ namespace HarryPotterKata.Tests
             SetUpEmptyCart();
             _myCart.AddBook(new Book(bookNumber));
             _myCart.AddBook(new Book(bookNumber));
-            CartPriceShouldBe(16);
+            CartPriceShouldBe(1600);
         }
 
         [Theory]
@@ -68,39 +68,47 @@ namespace HarryPotterKata.Tests
             _myCart.AddBook(new Book(bookNumber));
             _myCart.AddBook(new Book(bookNumber));
             _myCart.AddBook(new Book(bookNumber));
-            CartPriceShouldBe(24);
+            CartPriceShouldBe(2400);
         }
 
         [Fact]
-        public void Two_different_books_receive_5_percent_discount()
+        public void Two_different_books_receive_5_percent_disscount()
         {
             SetUpEmptyCart();
             _myCart.AddBook(new Book(1));
             _myCart.AddBook(new Book(2));
-            CartPriceShouldBe(8 * 2 * .95);
+            CartPriceShouldBe(800 * 2 * .95);
         }
 
         [Fact]
-        public void Two_different_books_twice_receive_5_percent_discount()
+        public void Two_different_books_twice_receive_5_percent_disscount()
         {
             SetUpEmptyCart();
             _myCart.AddBook(new Book(1));
             _myCart.AddBook(new Book(2));
             _myCart.AddBook(new Book(1));
             _myCart.AddBook(new Book(2));
-            CartPriceShouldBe(8 * 4 * .95);
+            CartPriceShouldBe(800 * 4 * .95);
         }
 
         [Fact]
-        public void Three_books_one_duplicated_receives_5_percent_discount()
+        public void Three_books_one_duplicated_receives_5_percent_for_the_pair()
         {
             SetUpEmptyCart();
             _myCart.AddBook(new Book(1));
             _myCart.AddBook(new Book(1));
             _myCart.AddBook(new Book(2));
-            CartPriceShouldBe((8*2*.95)+8);
+            CartPriceShouldBe((800*2*.95)+800);
         }
 
-
+        [Fact]
+        public void Three_different_books_get_10_percent_disscount()
+        {
+            SetUpEmptyCart();
+            _myCart.AddBook(new Book(1));
+            _myCart.AddBook(new Book(2));
+            _myCart.AddBook(new Book(3));
+            CartPriceShouldBe(800 * 3 * .90);
+        }
     }
 }

@@ -8,26 +8,30 @@ namespace HarryPotterKata
     public class ShoppingCart
     {
         private readonly Dictionary<Book, int> _books = new Dictionary<Book, int>();
-        private const int BookPrice = 8;
+        private const int BookPrice = 800;
+        private readonly Dictionary<int, double> discountsDictionary = new Dictionary<int, double>
+        {
+            {1, 0 },
+            {2, .05 },
+            {3, 0.1 },
+            {4, 0.20 },
+            {5, 0.25 }
+        };
 
         public ShoppingCart()
         {
             
         }
 
-        public double Price()
+        public double PriceInCents()
         {
-            var total = 0.0;
+            double total = 0;
             var remainingBooks = _books;
             
             while (GetNumberOfBooks(remainingBooks) > 0)
             {
                 var numberOfDistinctBooks = GetNumberOfDistinctBooks(remainingBooks);
-                if (numberOfDistinctBooks == 2)
-                    total += 2 * BookPrice * .95;
-                else
-                    total +=  BookPrice;
-
+                total += numberOfDistinctBooks * BookPrice * (1-discountsDictionary[numberOfDistinctBooks]);
                 RemoveOneOfEachBook(remainingBooks);
             }
             return total;
