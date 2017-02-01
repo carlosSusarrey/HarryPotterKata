@@ -12,16 +12,21 @@ namespace HarryPotterKata.Tests
     public class HarryPotterKataTests
     {
         [Fact]
-        public void A_Shopping_cart_with_zero_books_is_valued_in_zero_Euros()
+        public void A_ShoppingCart_with_zero_books_is_valued_in_zero_Euros()
         {
             var myCart = new ShoppingCart();
             myCart.Price().Should().Be(0);
         }
 
-        [Fact]
-        public void A_shopping_cart_with_any_one_book_Price_is_8()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        public void A_ShoppingCart_with_any_one_book_Price_is_8(int bookNumber)
         {
-            var myCart = new ShoppingCart(new Book(1));
+            var myCart = new ShoppingCart(new Book(bookNumber));
             myCart.Price().Should().Be(8);
         }
 
