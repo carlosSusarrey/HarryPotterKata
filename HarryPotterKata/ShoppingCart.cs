@@ -1,21 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace HarryPotterKata
 {
     public class ShoppingCart
     {
-        private readonly List<Book> _books = new List<Book>();
+        private readonly Dictionary<Book, int> _books = new Dictionary<Book, int>();
         private const int BookPrice = 8;
-
-        public ShoppingCart(Book book)
-        {
-            _books.Add(book);
-        }
-
-        public ShoppingCart(List<Book> bookList)
-        {
-            _books = bookList;
-        }
 
         public ShoppingCart()
         {
@@ -24,24 +16,56 @@ namespace HarryPotterKata
 
         public double Price()
         {
-            var numberOfDistinctBooks = DistinctBooksCount();
+            var remainingBooks = _books;
+            var numberOfRemainingBooks = GetNumberOfBooks(remainingBooks);
+            var total = 0.0;
 
-            if (numberOfDistinctBooks == 2)
+            while (numberOfRemainingBooks > 0)
             {
-                return _books.Count * BookPrice * .95;
+                var numberOfDistinctBooks = GetNumberOfDistinctBooks(remainingBooks);
+                if (numberOfDistinctBooks == 2)
+                    total += 2 * BookPrice * .95;
+                else
+                    total +=  BookPrice;
+
+                var distinctBooks = new Dictionary<Book,int>(remainingBooks);
+                foreach (var book in distinctBooks.Keys)
+                {
+                    if (remainingBooks[book] == 1)
+                    {
+                        remainingBooks.Remove(book);
+                    }
+                    else
+                    {
+                        remainingBooks[book] -= 1;
+                    }
+                }
+                numberOfRemainingBooks = GetNumberOfBooks(remainingBooks);
             }
-            return _books.Count * BookPrice;
+            return total;
         }
 
-        private int DistinctBooksCount()
+        private static int GetNumberOfBooks(Dictionary<Book, int> books)
         {
-            var distinctBooks = new HashSet<Book>(_books);
-            return distinctBooks.Count;
+            return books.Values.Sum(x => x);
+        }
+
+        private static int GetNumberOfDistinctBooks(Dictionary<Book, int> books)
+        {
+            return books.Count;
         }
 
         public void AddBook(Book book)
         {
-            _books.Add(book);
+            if (_books.ContainsKey(book))
+            {
+                _books[book] += 1;
+            }
+            else
+            {
+                _books.Add(book, 1);
+            }
+            
         }
     }
 }

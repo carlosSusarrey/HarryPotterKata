@@ -75,5 +75,15 @@ namespace HarryPotterKata.Tests
             _myCart.AddBook(new Book(2));
             CartPriceShouldBe(8 * 4 * .95);
         }
+
+        [Fact]
+        public void Three_books_one_duplicated_receives_5_percent_discount()
+        {
+            SetUpEmptyCart();
+            _myCart.AddBook(new Book(1));
+            _myCart.AddBook(new Book(1));
+            _myCart.AddBook(new Book(2));
+            CartPriceShouldBe((8*2*.95)+8);
+        }
     }
 }
