@@ -30,10 +30,15 @@ namespace HarryPotterKata.Tests
             myCart.Price().Should().Be(8);
         }
 
-        [Fact]
-        public void Two_of_the_same_book_Price_is_16()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        public void Two_of_the_same_book_Price_is_16(int bookNumber)
         {
-            var myCart = new ShoppingCart(new List<Book> {new Book(1), new Book(1)});
+            var myCart = new ShoppingCart(new List<Book> {new Book(bookNumber), new Book(bookNumber)});
             myCart.Price().Should().Be(16);
         }
 
