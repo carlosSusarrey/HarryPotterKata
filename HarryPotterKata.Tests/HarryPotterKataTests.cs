@@ -48,5 +48,12 @@ namespace HarryPotterKata.Tests
             var myCart = new ShoppingCart(new List<Book> {new Book(1), new Book(2)});
             myCart.Price().Should().Be(8 * 2 * .95);
         }
+
+        [Fact]
+        public void Two_different_books_twice_receive_5_percent_discount()
+        {
+            var myCart = new ShoppingCart(new List<Book> {new Book(1), new Book(1), new Book(2), new Book(2)});
+            myCart.Price().Should().Be(8 * 4 * .95);
+        }
     }
 }
