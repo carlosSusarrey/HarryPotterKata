@@ -22,8 +22,13 @@ namespace HarryPotterKata
             
         }
 
-        public int Price()
+        public double Price()
         {
+            var distinctBooks = new HashSet<Book>(_books);
+            if (distinctBooks.Count == 2)
+            {
+                return _books.Count * BookPrice * .95;
+            }
             return _books.Count * BookPrice;
         }
     }
