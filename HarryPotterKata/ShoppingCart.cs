@@ -1,12 +1,19 @@
-﻿namespace HarryPotterKata
+﻿using System.Collections.Generic;
+
+namespace HarryPotterKata
 {
     public class ShoppingCart
     {
-        private Book book;
+        private List<Book> _books;
 
         public ShoppingCart(Book book)
         {
-            this.book = book;
+            _books = new List<Book> {book};
+        }
+
+        public ShoppingCart(List<Book> bookList)
+        {
+            _books = bookList;
         }
 
         public ShoppingCart()
@@ -16,7 +23,11 @@
 
         public int Price()
         {
-            return book != null ? 8 : 0;
+            if (_books.Count == 0)
+            {
+                return 0;
+            }
+            return _books.Count * 8;
         }
     }
 }
