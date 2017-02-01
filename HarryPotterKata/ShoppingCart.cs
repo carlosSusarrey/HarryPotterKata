@@ -38,5 +38,10 @@ namespace HarryPotterKata
             var distinctBooks = new HashSet<Book>(_books);
             return distinctBooks.Count;
         }
+
+        public void AddBook(Book book)
+        {
+            _books.Add(book);
+        }
     }
 }

@@ -11,11 +11,22 @@ namespace HarryPotterKata.Tests
 {
     public class HarryPotterKataTests
     {
+        private void SetUpEmptyCart()
+        {
+            _myCart = new ShoppingCart();
+        }
+
+        private void CartPriceShouldBe(double expected)
+        {
+            _myCart.Price().Should().Be(expected);
+        }
+
+        private ShoppingCart _myCart;
         [Fact]
         public void A_ShoppingCart_with_zero_books_is_valued_in_zero_Euros()
         {
-            var myCart = new ShoppingCart();
-            myCart.Price().Should().Be(0);
+            SetUpEmptyCart();
+            CartPriceShouldBe(0);
         }
 
         [Theory]
@@ -26,8 +37,9 @@ namespace HarryPotterKata.Tests
         [InlineData(5)]
         public void A_ShoppingCart_with_any_one_book_Price_is_8(int bookNumber)
         {
-            var myCart = new ShoppingCart(new Book(bookNumber));
-            myCart.Price().Should().Be(8);
+            SetUpEmptyCart();
+            _myCart.AddBook(new Book(bookNumber));
+            CartPriceShouldBe(8);
         }
 
         [Theory]
@@ -38,22 +50,30 @@ namespace HarryPotterKata.Tests
         [InlineData(5)]
         public void Two_of_the_same_book_Price_is_16(int bookNumber)
         {
-            var myCart = new ShoppingCart(new List<Book> {new Book(bookNumber), new Book(bookNumber)});
-            myCart.Price().Should().Be(16);
+            SetUpEmptyCart();
+            _myCart.AddBook(new Book(bookNumber));
+            _myCart.AddBook(new Book(bookNumber));
+            CartPriceShouldBe(16);
         }
 
         [Fact]
         public void Two_different_books_receive_5_percent_discount()
         {
-            var myCart = new ShoppingCart(new List<Book> {new Book(1), new Book(2)});
-            myCart.Price().Should().Be(8 * 2 * .95);
+            SetUpEmptyCart();
+            _myCart.AddBook(new Book(1));
+            _myCart.AddBook(new Book(2));
+            CartPriceShouldBe(8 * 2 * .95);
         }
 
         [Fact]
         public void Two_different_books_twice_receive_5_percent_discount()
         {
-            var myCart = new ShoppingCart(new List<Book> {new Book(1), new Book(1), new Book(2), new Book(2)});
-            myCart.Price().Should().Be(8 * 4 * .95);
+            SetUpEmptyCart();
+            _myCart.AddBook(new Book(1));
+            _myCart.AddBook(new Book(2));
+            _myCart.AddBook(new Book(1));
+            _myCart.AddBook(new Book(2));
+            CartPriceShouldBe(8 * 4 * .95);
         }
     }
 }
