@@ -11,12 +11,14 @@ namespace HarryPotterKata.Tests
 {
     public class HarryPotterKataTests
     {
+        private const int BookPrice = 800;
+
         private void SetUpEmptyCart()
         {
             _myCart = new ShoppingCart();
         }
 
-        private void CartPriceShouldBe(double expected)
+        private void CartPriceInCentsShouldBe(double expected)
         {
             _myCart.PriceInCents().Should().Be(expected);
         }
@@ -26,7 +28,7 @@ namespace HarryPotterKata.Tests
         public void A_ShoppingCart_with_zero_books_is_valued_in_zero_Euros()
         {
             SetUpEmptyCart();
-            CartPriceShouldBe(0);
+            CartPriceInCentsShouldBe(0);
         }
 
         [Theory]
@@ -39,7 +41,7 @@ namespace HarryPotterKata.Tests
         {
             SetUpEmptyCart();
             _myCart.AddBook(new Book(bookNumber));
-            CartPriceShouldBe(800);
+            CartPriceInCentsShouldBe(BookPrice);
         }
 
         [Theory]
@@ -53,7 +55,7 @@ namespace HarryPotterKata.Tests
             SetUpEmptyCart();
             _myCart.AddBook(new Book(bookNumber));
             _myCart.AddBook(new Book(bookNumber));
-            CartPriceShouldBe(1600);
+            CartPriceInCentsShouldBe(BookPrice*2);
         }
 
         [Theory]
@@ -68,7 +70,7 @@ namespace HarryPotterKata.Tests
             _myCart.AddBook(new Book(bookNumber));
             _myCart.AddBook(new Book(bookNumber));
             _myCart.AddBook(new Book(bookNumber));
-            CartPriceShouldBe(2400);
+            CartPriceInCentsShouldBe(BookPrice*3);
         }
 
         [Fact]
@@ -77,7 +79,7 @@ namespace HarryPotterKata.Tests
             SetUpEmptyCart();
             _myCart.AddBook(new Book(1));
             _myCart.AddBook(new Book(2));
-            CartPriceShouldBe(800 * 2 * .95);
+            CartPriceInCentsShouldBe(BookPrice * 2 * .95);
         }
 
         [Fact]
@@ -88,7 +90,7 @@ namespace HarryPotterKata.Tests
             _myCart.AddBook(new Book(2));
             _myCart.AddBook(new Book(1));
             _myCart.AddBook(new Book(2));
-            CartPriceShouldBe(800 * 4 * .95);
+            CartPriceInCentsShouldBe(BookPrice * 4 * .95);
         }
 
         [Fact]
@@ -98,7 +100,7 @@ namespace HarryPotterKata.Tests
             _myCart.AddBook(new Book(1));
             _myCart.AddBook(new Book(1));
             _myCart.AddBook(new Book(2));
-            CartPriceShouldBe((800*2*.95)+800);
+            CartPriceInCentsShouldBe((BookPrice*2*.95)+800);
         }
 
         [Fact]
@@ -108,7 +110,7 @@ namespace HarryPotterKata.Tests
             _myCart.AddBook(new Book(1));
             _myCart.AddBook(new Book(2));
             _myCart.AddBook(new Book(3));
-            CartPriceShouldBe(800 * 3 * .90);
+            CartPriceInCentsShouldBe(BookPrice * 3 * .90);
         }
 
         [Fact]
@@ -119,7 +121,7 @@ namespace HarryPotterKata.Tests
             _myCart.AddBook(new Book(2));
             _myCart.AddBook(new Book(3));
             _myCart.AddBook(new Book(4));
-            CartPriceShouldBe(800*4*.8);
+            CartPriceInCentsShouldBe(BookPrice*4*.8);
         }
 
         [Fact]
@@ -130,7 +132,21 @@ namespace HarryPotterKata.Tests
             _myCart.AddBook(new Book(2));
             _myCart.AddBook(new Book(3));
             _myCart.AddBook(new Book(1));
-            CartPriceShouldBe((800*3*.90)+800);
+            CartPriceInCentsShouldBe((BookPrice*3*.90)+800);
         }
+
+        [Fact]
+        public void Five_different_books_receive_25_percent_disscount()
+        {
+            SetUpEmptyCart();
+            _myCart.AddBook(new Book(1));
+            _myCart.AddBook(new Book(2));
+            _myCart.AddBook(new Book(3));
+            _myCart.AddBook(new Book(4));
+            _myCart.AddBook(new Book(5));
+            CartPriceInCentsShouldBe(BookPrice*5*.75);
+        }
+
+
     }
 }
