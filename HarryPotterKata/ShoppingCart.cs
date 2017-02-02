@@ -18,11 +18,6 @@ namespace HarryPotterKata
             {5, 0.25 }
         };
 
-        public ShoppingCart()
-        {
-            
-        }
-
         public double PriceInCents()
         {
             double total = 0;

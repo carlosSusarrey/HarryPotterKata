@@ -2,7 +2,7 @@
 {
     public class Book
     {
-        private int BookNumber
+        public int BookNumber
         {
             get;
         }

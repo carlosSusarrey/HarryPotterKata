@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Wintellect.PowerCollections;
 using Xunit;
 
 namespace HarryPotterKata.Tests
@@ -147,6 +149,16 @@ namespace HarryPotterKata.Tests
             CartPriceInCentsShouldBe(BookPrice*5*.75);
         }
 
-
+        [Fact]
+        public void Test_Bag_class()
+        {
+            var myBooks = new Bag<Book> {new Book(1), new Book(1)};
+            myBooks.Count.Should().Be(2);
+            myBooks.DistinctItems().Count().Should().Be(1);
+            foreach (var book in myBooks)
+            {
+                book.BookNumber.Should().Be(1);
+            }
+        }
     }
 }
