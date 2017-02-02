@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Wintellect.PowerCollections;
 
 namespace HarryPotterKata
 {
     public class ShoppingCart
     {
-        private readonly Dictionary<Book, int> _books = new Dictionary<Book, int>();
+        private readonly Bag<Book> _books = new Bag<Book>();
         private const int BookPrice = 800;
         private readonly Dictionary<int, double> discountsDictionary = new Dictionary<int, double>
         {
@@ -21,55 +23,39 @@ namespace HarryPotterKata
         public double PriceInCents()
         {
             double total = 0;
-            var remainingBooks = _books;
+            var remainingBooks = new Bag<Book>(_books);
             
             while (GetNumberOfBooks(remainingBooks) > 0)
             {
                 var numberOfDistinctBooks = GetNumberOfDistinctBooks(remainingBooks);
-                total += numberOfDistinctBooks * BookPrice * (1-discountsDictionary[numberOfDistinctBooks]);
+                total += numberOfDistinctBooks * BookPrice * (1 - discountsDictionary[numberOfDistinctBooks]);
                 RemoveOneOfEachBook(remainingBooks);
             }
             return total;
         }
 
-        private static void RemoveOneOfEachBook(Dictionary<Book, int> remainingBooks)
+        private static void RemoveOneOfEachBook(ICollection<Book> remainingBooks)
         {
-            if (remainingBooks == null) throw new ArgumentNullException(nameof(remainingBooks));
-            var distinctBooks = new Dictionary<Book, int>(remainingBooks);
-            foreach (var book in distinctBooks.Keys)
+            var distinctBooks = new Bag<Book>(remainingBooks);
+            foreach (var book in distinctBooks.DistinctItems())
             {
-                if (remainingBooks[book] == 1)
-                {
-                    remainingBooks.Remove(book);
-                }
-                else
-                {
-                    remainingBooks[book] -= 1;
-                }
+                remainingBooks.Remove(book);
             }
         }
 
-        private static int GetNumberOfBooks(Dictionary<Book, int> books)
-        {
-            return books.Values.Sum(x => x);
-        }
-
-        private static int GetNumberOfDistinctBooks(Dictionary<Book, int> books)
+        private static int GetNumberOfBooks(ICollection books)
         {
             return books.Count;
         }
 
+        private static int GetNumberOfDistinctBooks(Bag<Book> books)
+        {
+            return books.DistinctItems().Count();
+        }
+
         public void AddBook(Book book)
         {
-            if (_books.ContainsKey(book))
-            {
-                _books[book] += 1;
-            }
-            else
-            {
-                _books.Add(book, 1);
-            }
-            
+            _books.Add(book);    
         }
     }
 }
