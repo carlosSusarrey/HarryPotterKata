@@ -160,5 +160,21 @@ namespace HarryPotterKata.Tests
                 book.BookNumber.Should().Be(1);
             }
         }
+
+        [Fact]
+        public void
+            Eight_books_that_can_be_grouped_as_5_and_3_or_4_and_4_should_be_grouped_as_the_best_disscount_possible()
+        {
+            SetUpEmptyCart();
+            _myCart.AddBook(new Book(1));
+            _myCart.AddBook(new Book(1));
+            _myCart.AddBook(new Book(2));
+            _myCart.AddBook(new Book(2));
+            _myCart.AddBook(new Book(3));
+            _myCart.AddBook(new Book(3));
+            _myCart.AddBook(new Book(4));
+            _myCart.AddBook(new Book(5));
+            CartPriceInCentsShouldBe(5120);
+        }
     }
 }

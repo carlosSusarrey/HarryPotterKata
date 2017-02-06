@@ -22,22 +22,32 @@ namespace HarryPotterKata
 
         public double PriceInCents()
         {
-            double total = 0;
-            var remainingBooks = new Bag<Book>(_books);
-            
-            while (GetNumberOfBooks(remainingBooks) > 0)
+            var convenientDisscounts = GetMostConvenientSetsOfBooks(_books);
+
+            return convenientDisscounts.Select((disscountCount, i) => BookPrice * (i + 1) * disscountCount * (1 - discountsDictionary[i + 1])).Sum();
+        }
+
+        private static int[] GetMostConvenientSetsOfBooks(Bag<Book> books)
+        {
+            var discountArray = new[] {0,0,0,0,0};
+            while (GetNumberOfBooks(books) > 0)
             {
-                var numberOfDistinctBooks = GetNumberOfDistinctBooks(remainingBooks);
-                total += numberOfDistinctBooks * BookPrice * (1 - discountsDictionary[numberOfDistinctBooks]);
-                RemoveOneOfEachBook(remainingBooks);
+                discountArray[books.DistinctItems().Count() -1] += 1;
+                RemoveOneOfEachBook(books);
             }
-            return total;
+            while (discountArray[4] > 0 && discountArray[2] > 0)
+            {
+                discountArray[4]--;
+                discountArray[2]--;
+                discountArray[3] += 2;
+            }
+            return discountArray;
         }
 
         private static void RemoveOneOfEachBook(ICollection<Book> remainingBooks)
         {
-            var distinctBooks = new Bag<Book>(remainingBooks);
-            foreach (var book in distinctBooks.DistinctItems())
+            var auxiliaryBagOfBooks = new Bag<Book>(remainingBooks);
+            foreach (var book in auxiliaryBagOfBooks.DistinctItems())
             {
                 remainingBooks.Remove(book);
             }
@@ -47,11 +57,7 @@ namespace HarryPotterKata
         {
             return books.Count;
         }
-
-        private static int GetNumberOfDistinctBooks(Bag<Book> books)
-        {
-            return books.DistinctItems().Count();
-        }
+        
 
         public void AddBook(Book book)
         {
